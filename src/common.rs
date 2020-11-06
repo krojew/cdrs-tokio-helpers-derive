@@ -65,7 +65,7 @@ fn into_rust_with_args(field_type: syn::Ty, arguments: quote::Tokens) -> quote::
   let field_type_ident = get_cdrs_type_ident(field_type.clone());
   match field_type_ident.as_ref() {
     "Blob" | "String" | "bool" | "i64" | "i32" | "i16" | "i8" | "f64" | "f32" | "Decimal"
-    | "IpAddr" | "Uuid" | "Timespec" => {
+    | "IpAddr" | "Uuid" | "Timespec" | "PrimitiveDateTime" => {
       quote! {
         #field_type_ident::from_cdrs_r(#arguments)?
       }
@@ -133,6 +133,7 @@ fn get_cdrs_type_ident(ty: syn::Ty) -> syn::Ident {
     "IpAddr" => "IpAddr".into(),
     "Uuid" => "Uuid".into(),
     "Timespec" => "Timespec".into(),
+    "PrimitiveDateTime" => "PrimitiveDateTime".into(),
     "Vec" => "cdrs::types::list::List".into(),
     "HashMap" => "cdrs::types::map::Map".into(),
     "Option" => "Option".into(),
@@ -155,7 +156,7 @@ fn as_rust(ty: syn::Ty, val: quote::Tokens) -> quote::Tokens {
   let cdrs_type = get_cdrs_type_ident(ty.clone());
   match cdrs_type.as_ref() {
     "Blob" | "String" | "bool" | "i64" | "i32" | "i16" | "i8" | "f64" | "f32" | "IpAddr"
-    | "Uuid" | "Timespec" | "Decimal" => val,
+    | "Uuid" | "Timespec" | "Decimal" | "PrimitiveDateTime" => val,
     "cdrs::types::list::List" => {
       let vec_type = get_ident_params_string(ty.clone());
       let inter_rust_type = get_cdrs_type_ident(vec_type.clone());
