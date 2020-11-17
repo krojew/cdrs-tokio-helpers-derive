@@ -1,8 +1,6 @@
-# cdrs-helpers-derive
+# cdrs-tokio-helpers-derive
 
 Procedural macros that derive helper traits for CDRS Cassandra to Rust types conversion back and forth
-
-The package is under hard development and is absolutely not stable.
 
 Features:
 

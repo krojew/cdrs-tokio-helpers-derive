@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate cdrs;
 #[macro_use]
-extern crate cdrs_helpers_derive;
+extern crate cdrs_tokio_helpers_derive;
 extern crate time;
 
 use time::Timespec;
