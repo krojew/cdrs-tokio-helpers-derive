@@ -6,14 +6,14 @@ extern crate time;
 
 use time::Timespec;
 use std::collections::HashMap;
-use cdrs::types::AsRustType;
-use cdrs::types::value::{Bytes, Value};
-use cdrs::frame::{IntoBytes, TryFromRow, TryFromUDT};
-use cdrs::types::rows::Row;
-use cdrs::types::udt::UDT;
-use cdrs::types::list::List;
-use cdrs::types::map::Map;
-use cdrs::types::from_cdrs::FromCDRSByName;
+use cdrs_tokio::types::AsRustType;
+use cdrs_tokio::types::value::{Bytes, Value};
+use cdrs_tokio::frame::{IntoBytes, TryFromRow, TryFromUDT};
+use cdrs_tokio::types::rows::Row;
+use cdrs_tokio::types::udt::UDT;
+use cdrs_tokio::types::list::List;
+use cdrs_tokio::types::map::Map;
+use cdrs_tokio::types::from_cdrs::FromCDRSByName;
 
 // #[derive(Debug, IntoCDRSValue, TryFromRow)]
 #[derive(Clone, Debug, IntoCDRSValue, TryFromRow)]
@@ -48,7 +48,7 @@ fn main() {
         opt: Some(HashMap::new()),
         my_timestamp: None,
     };
-    let val: cdrs::types::value::Value = udt.clone().into();
+    let val: cdrs_tokio::types::value::Value = udt.clone().into();
     let values = query_values!(udt.clone());
     println!("as value {:?}", val);
     println!("among values {:?}", values);
@@ -56,8 +56,8 @@ fn main() {
 
 #[cfg(test)]
 mod test {
-    use cdrs::query::QueryValues;
-    use cdrs::types::prelude::Value;
+    use cdrs_tokio::query::QueryValues;
+    use cdrs_tokio::types::prelude::Value;
 
     #[derive(DBMirror)]
     #[allow(dead_code)]

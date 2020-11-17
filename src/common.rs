@@ -70,11 +70,11 @@ fn into_rust_with_args(field_type: syn::Ty, arguments: quote::Tokens) -> quote::
         #field_type_ident::from_cdrs_r(#arguments)?
       }
     }
-    "cdrs::types::list::List" => {
+    "cdrs_tokio::types::list::List" => {
       let list_as_rust = as_rust(field_type, quote! {list});
 
       quote! {
-        match cdrs::types::list::List::from_cdrs_r(#arguments) {
+        match cdrs_tokio::types::list::List::from_cdrs_r(#arguments) {
           Ok(ref list) => {
             #list_as_rust
           },
@@ -82,10 +82,10 @@ fn into_rust_with_args(field_type: syn::Ty, arguments: quote::Tokens) -> quote::
         }
       }
     }
-    "cdrs::types::map::Map" => {
+    "cdrs_tokio::types::map::Map" => {
       let map_as_rust = as_rust(field_type, quote! {map});
       quote! {
-        match cdrs::types::map::Map::from_cdrs_r(#arguments) {
+        match cdrs_tokio::types::map::Map::from_cdrs_r(#arguments) {
           Ok(map) => {
             #map_as_rust
           },
@@ -111,7 +111,7 @@ fn into_rust_with_args(field_type: syn::Ty, arguments: quote::Tokens) -> quote::
     }
     _ => {
       quote! {
-        #field_type::try_from_udt(cdrs::types::udt::UDT::from_cdrs_r(#arguments)?)?
+        #field_type::try_from_udt(cdrs_tokio::types::udt::UDT::from_cdrs_r(#arguments)?)?
       }
     }
   }
@@ -134,10 +134,10 @@ fn get_cdrs_type_ident(ty: syn::Ty) -> syn::Ident {
     "Uuid" => "Uuid".into(),
     "Timespec" => "Timespec".into(),
     "PrimitiveDateTime" => "PrimitiveDateTime".into(),
-    "Vec" => "cdrs::types::list::List".into(),
-    "HashMap" => "cdrs::types::map::Map".into(),
+    "Vec" => "cdrs_tokio::types::list::List".into(),
+    "HashMap" => "cdrs_tokio::types::map::Map".into(),
     "Option" => "Option".into(),
-    _ => "cdrs::types::udt::UDT".into(),
+    _ => "cdrs_tokio::types::udt::UDT".into(),
   }
 }
 
@@ -157,7 +157,7 @@ fn as_rust(ty: syn::Ty, val: quote::Tokens) -> quote::Tokens {
   match cdrs_type.as_ref() {
     "Blob" | "String" | "bool" | "i64" | "i32" | "i16" | "i8" | "f64" | "f32" | "IpAddr"
     | "Uuid" | "Timespec" | "Decimal" | "PrimitiveDateTime" => val,
-    "cdrs::types::list::List" => {
+    "cdrs_tokio::types::list::List" => {
       let vec_type = get_ident_params_string(ty.clone());
       let inter_rust_type = get_cdrs_type_ident(vec_type.clone());
       let decoded_item = as_rust(vec_type.clone(), quote! {item});
@@ -172,7 +172,7 @@ fn as_rust(ty: syn::Ty, val: quote::Tokens) -> quote::Tokens {
         }
       }
     }
-    "cdrs::types::map::Map" => {
+    "cdrs_tokio::types::map::Map" => {
       let (map_key_type, map_value_type) = get_map_params_string(ty.clone());
       let inter_rust_type = get_cdrs_type_ident(map_value_type.clone());
       let decoded_item = as_rust(map_value_type.clone(), quote! {val});
