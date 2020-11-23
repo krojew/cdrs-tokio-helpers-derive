@@ -97,15 +97,22 @@ fn into_rust_with_args(field_type: syn::Ty, arguments: quote::Tokens) -> quote::
       let opt_type = get_ident_params_string(field_type.clone());
       let opt_type_rustified = get_cdrs_type_ident(opt_type.clone());
       let opt_value_as_rust = as_rust(opt_type.clone(), quote! {opt_value});
-      quote! {
-        {
-          match #opt_type_rustified::from_cdrs_by_name(#arguments)? {
-          Some(opt_value) => {
-            let decoded = #opt_value_as_rust;
-            Some(decoded)
-          },
-          _ => None
+
+      if is_non_zero_primitive(&opt_type_rustified) {
+        quote! {
+          #opt_type_rustified::from_cdrs_by_name(#arguments)?
         }
+      } else {
+        quote! {
+          {
+            match #opt_type_rustified::from_cdrs_by_name(#arguments)? {
+              Some(opt_value) => {
+                let decoded = #opt_value_as_rust;
+                Some(decoded)
+              },
+              _ => None
+            }
+          }
         }
       }
     }
@@ -115,6 +122,10 @@ fn into_rust_with_args(field_type: syn::Ty, arguments: quote::Tokens) -> quote::
       }
     }
   }
+}
+
+fn is_non_zero_primitive(ident: &syn::Ident) -> bool {
+  matches!(ident.as_ref(), "NonZeroI8" | "NonZeroI16" | "NonZeroI32" | "NonZeroI64")
 }
 
 fn get_cdrs_type_ident(ty: syn::Ty) -> syn::Ident {
@@ -137,6 +148,10 @@ fn get_cdrs_type_ident(ty: syn::Ty) -> syn::Ident {
     "Vec" => "cdrs_tokio::types::list::List".into(),
     "HashMap" => "cdrs_tokio::types::map::Map".into(),
     "Option" => "Option".into(),
+    "NonZeroI8" => "NonZeroI8".into(),
+    "NonZeroI16" => "NonZeroI16".into(),
+    "NonZeroI32" => "NonZeroI32".into(),
+    "NonZeroI64" => "NonZeroI64".into(),
     _ => "cdrs_tokio::types::udt::UDT".into(),
   }
 }
