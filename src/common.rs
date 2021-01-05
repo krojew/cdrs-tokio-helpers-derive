@@ -65,7 +65,7 @@ fn into_rust_with_args(field_type: syn::Ty, arguments: quote::Tokens) -> quote::
   let field_type_ident = get_cdrs_type_ident(field_type.clone());
   match field_type_ident.as_ref() {
     "Blob" | "String" | "bool" | "i64" | "i32" | "i16" | "i8" | "f64" | "f32" | "Decimal"
-    | "IpAddr" | "Uuid" | "Timespec" | "PrimitiveDateTime" => {
+    | "IpAddr" | "Uuid" | "Timespec" | "PrimitiveDateTime" | "NaiveDateTime" | "DateTime" => {
       quote! {
         #field_type_ident::from_cdrs_r(#arguments)?
       }
@@ -152,6 +152,8 @@ fn get_cdrs_type_ident(ty: syn::Ty) -> syn::Ident {
     "NonZeroI16" => "NonZeroI16".into(),
     "NonZeroI32" => "NonZeroI32".into(),
     "NonZeroI64" => "NonZeroI64".into(),
+    "NaiveDateTime" => "NaiveDateTime".into(),
+    "DateTime" => "DateTime".into(),
     _ => "cdrs_tokio::types::udt::UDT".into(),
   }
 }
@@ -166,7 +168,7 @@ fn get_ident(ty: syn::Ty) -> syn::Ident {
   }
 }
 
-// returns single value decoded and optionaly iterative mapping that uses decoded value
+// returns single value decoded and optionally iterative mapping that uses decoded value
 fn as_rust(ty: syn::Ty, val: quote::Tokens) -> quote::Tokens {
   let cdrs_type = get_cdrs_type_ident(ty.clone());
   match cdrs_type.as_ref() {
