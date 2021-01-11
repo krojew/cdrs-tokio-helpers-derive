@@ -27,11 +27,11 @@ pub fn impl_into_cdrs_value(ast: &syn::DeriveInput) -> quote::Tokens {
         };
       }
     });
-
     // As Value has following implementation impl<T: Into<Bytes>> From<T> for Value
     // for a struct it's enough to implement Into<Bytes> in order to be convertable into Value
     // wich is used for making queries
     quote! {
+        #[allow(clippy::from_over_into)]
         impl Into<cdrs_tokio::types::value::Bytes> for #name {
           fn into(self) -> cdrs_tokio::types::value::Bytes {
             let mut bytes: Vec<u8> = vec![];

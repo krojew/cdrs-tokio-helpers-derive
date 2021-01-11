@@ -50,7 +50,7 @@ fn convert_field_into_rust(field: syn::Field) -> quote::Tokens {
   string_name.append("\"");
   string_name.append(field.ident.clone().unwrap());
   string_name.append("\".trim()");
-  let arguments = get_arguments(string_name.clone());
+  let arguments = get_arguments(string_name);
 
   into_rust_with_args(field.ty, arguments)
 }
@@ -94,9 +94,9 @@ fn into_rust_with_args(field_type: syn::Ty, arguments: quote::Tokens) -> quote::
       }
     }
     "Option" => {
-      let opt_type = get_ident_params_string(field_type.clone());
+      let opt_type = get_ident_params_string(field_type);
       let opt_type_rustified = get_cdrs_type_ident(opt_type.clone());
-      let opt_value_as_rust = as_rust(opt_type.clone(), quote! {opt_value});
+      let opt_value_as_rust = as_rust(opt_type, quote! {opt_value});
 
       if is_non_zero_primitive(&opt_type_rustified) {
         quote! {
@@ -129,7 +129,7 @@ fn is_non_zero_primitive(ident: &syn::Ident) -> bool {
 }
 
 fn get_cdrs_type_ident(ty: syn::Ty) -> syn::Ident {
-  let type_string = get_ident_string(ty.clone());
+  let type_string = get_ident_string(ty);
   match type_string.as_str() {
     "Blob" => "Blob".into(),
     "String" => "String".into(),
@@ -175,7 +175,7 @@ fn as_rust(ty: syn::Ty, val: quote::Tokens) -> quote::Tokens {
     "Blob" | "String" | "bool" | "i64" | "i32" | "i16" | "i8" | "f64" | "f32" | "IpAddr"
     | "Uuid" | "Timespec" | "Decimal" | "PrimitiveDateTime" => val,
     "cdrs_tokio::types::list::List" => {
-      let vec_type = get_ident_params_string(ty.clone());
+      let vec_type = get_ident_params_string(ty);
       let inter_rust_type = get_cdrs_type_ident(vec_type.clone());
       let decoded_item = as_rust(vec_type.clone(), quote! {item});
       quote! {
@@ -190,7 +190,7 @@ fn as_rust(ty: syn::Ty, val: quote::Tokens) -> quote::Tokens {
       }
     }
     "cdrs_tokio::types::map::Map" => {
-      let (map_key_type, map_value_type) = get_map_params_string(ty.clone());
+      let (map_key_type, map_value_type) = get_map_params_string(ty);
       let inter_rust_type = get_cdrs_type_ident(map_value_type.clone());
       let decoded_item = as_rust(map_value_type.clone(), quote! {val});
       quote! {
@@ -205,8 +205,8 @@ fn as_rust(ty: syn::Ty, val: quote::Tokens) -> quote::Tokens {
       }
     }
     "Option" => {
-      let opt_type = get_ident_params_string(ty.clone());
-      as_rust(opt_type.clone(), val)
+      let opt_type = get_ident_params_string(ty);
+      as_rust(opt_type, val)
     }
     _ => {
       quote! {
