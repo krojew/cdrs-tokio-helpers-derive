@@ -13,17 +13,17 @@ pub fn impl_into_cdrs_value(ast: &syn::DeriveInput) -> quote::Tokens {
           match self.#field_ident {
             Some(ref val) => {
               let field_bytes: cdrs_tokio::types::value::Bytes = val.clone().into();
-              bytes.append(&mut cdrs_tokio::types::value::Value::new_normal(field_bytes).into_cbytes());
+              bytes.append(&mut cdrs_tokio::types::value::Value::new_normal(field_bytes).as_bytes());
             },
             None => {
-              bytes.append(&mut cdrs_tokio::types::value::Value::new_not_set().into_cbytes());
+              bytes.append(&mut cdrs_tokio::types::value::Value::new_not_set().as_bytes());
             }
           }
         };
       } else {
         return quote! {
           let field_bytes: cdrs_tokio::types::value::Bytes = self.#field_ident.into();
-          bytes.append(&mut cdrs_tokio::types::value::Value::new_normal(field_bytes).into_cbytes());
+          bytes.append(&mut cdrs_tokio::types::value::Value::new_normal(field_bytes).as_bytes());
         };
       }
     });
