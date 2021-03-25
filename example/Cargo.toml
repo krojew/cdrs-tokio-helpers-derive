@@ -2,8 +2,10 @@
 name = "example"
 version = "0.1.0"
 authors = ["Alex Pikalov <alex.pikalov.khar@gmail.com>", "Kamil Rojewski <kamil.rojewski@gmail.com>"]
+edition = "2018"
 
 [dependencies]
 time = "0.1.36"
 cdrs-tokio-helpers-derive = { path = ".." }
-cdrs-tokio = "1.0"
+cdrs-tokio = "3.0"
+uuid = "0.8"

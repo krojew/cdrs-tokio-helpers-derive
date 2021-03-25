@@ -34,6 +34,8 @@ pub fn impl_into_cdrs_value(ast: &syn::DeriveInput) -> quote::Tokens {
         #[allow(clippy::from_over_into)]
         impl Into<cdrs_tokio::types::value::Bytes> for #name {
           fn into(self) -> cdrs_tokio::types::value::Bytes {
+            use cdrs_tokio::frame::AsBytes;
+
             let mut bytes: Vec<u8> = vec![];
             #(#conver_into_bytes)*
             cdrs_tokio::types::value::Bytes::new(bytes)
