@@ -41,6 +41,6 @@ pub fn impl_into_cdrs_value(ast: &syn::DeriveInput) -> quote::Tokens {
         }
     }
   } else {
-    panic!("#[derive(IntoCDRSValue)] is only defined for structs, not for enums!");
+    panic!("#[derive(IntoCdrsValue)] is only defined for structs, not for enums!");
   }
 }

@@ -34,7 +34,7 @@ pub fn db_mirror(input: TokenStream) -> TokenStream {
     gen.parse().unwrap()
 }
 
-#[proc_macro_derive(IntoCDRSValue)]
+#[proc_macro_derive(IntoCdrsValue)]
 pub fn into_cdrs_value(input: TokenStream) -> TokenStream {
     // Construct a string representation of the type definition
     let s = input.to_string();
@@ -64,7 +64,7 @@ pub fn try_from_row(input: TokenStream) -> TokenStream {
     gen.parse().unwrap()
 }
 
-#[proc_macro_derive(TryFromUDT)]
+#[proc_macro_derive(TryFromUdt)]
 pub fn try_from_udt(input: TokenStream) -> TokenStream {
     // Construct a string representation of the type definition
     let s = input.to_string();

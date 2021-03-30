@@ -8,15 +8,15 @@ use time::Timespec;
 use std::collections::HashMap;
 use cdrs_tokio::types::AsRustType;
 use cdrs_tokio::types::value::{Bytes, Value};
-use cdrs_tokio::frame::{IntoBytes, TryFromRow, TryFromUDT};
+use cdrs_tokio::frame::{IntoBytes, TryFromRow, TryFromUdt};
 use cdrs_tokio::types::rows::Row;
 use cdrs_tokio::types::udt::UDT;
 use cdrs_tokio::types::list::List;
 use cdrs_tokio::types::map::Map;
 use cdrs_tokio::types::from_cdrs::FromCDRSByName;
 
-// #[derive(Debug, IntoCDRSValue, TryFromRow)]
-#[derive(Clone, Debug, IntoCDRSValue, TryFromRow)]
+// #[derive(Debug, IntoCdrsValue, TryFromRow)]
+#[derive(Clone, Debug, IntoCdrsValue, TryFromRow)]
 struct Udt {
     pub number: i32,
     pub number_16: i16,
@@ -27,14 +27,14 @@ struct Udt {
     pub my_timestamp: Option<Timespec>,
 }
 
-// #[derive(Debug, IntoCDRSValue, TryFromRow, TryFromUDT)]
-#[derive(Clone, Debug, IntoCDRSValue, TryFromUDT)]
+// #[derive(Debug, IntoCdrsValue, TryFromRow, TryFromUdt)]
+#[derive(Clone, Debug, IntoCdrsValue, TryFromUdt)]
 struct N {
     pub n: i16,
     pub x: X,
 }
 
-#[derive(Clone, Debug, IntoCDRSValue, TryFromUDT)]
+#[derive(Clone, Debug, IntoCdrsValue, TryFromUdt)]
 struct X {
     pub n: i32,
 }
