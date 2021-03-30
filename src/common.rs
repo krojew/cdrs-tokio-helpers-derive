@@ -118,7 +118,7 @@ fn into_rust_with_args(field_type: syn::Ty, arguments: quote::Tokens) -> quote::
     }
     _ => {
       quote! {
-        #field_type::try_from_udt(cdrs_tokio::types::udt::UDT::from_cdrs_r(#arguments)?)?
+        #field_type::try_from_udt(cdrs_tokio::types::udt::Udt::from_cdrs_r(#arguments)?)?
       }
     }
   }
@@ -154,7 +154,7 @@ fn get_cdrs_type_ident(ty: syn::Ty) -> syn::Ident {
     "NonZeroI64" => "NonZeroI64".into(),
     "NaiveDateTime" => "NaiveDateTime".into(),
     "DateTime" => "DateTime".into(),
-    _ => "cdrs_tokio::types::udt::UDT".into(),
+    _ => "cdrs_tokio::types::udt::Udt".into(),
   }
 }
 

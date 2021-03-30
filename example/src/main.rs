@@ -10,7 +10,7 @@ use cdrs_tokio::types::AsRustType;
 use cdrs_tokio::types::value::{Bytes, Value};
 use cdrs_tokio::frame::{IntoBytes, TryFromRow, TryFromUdt};
 use cdrs_tokio::types::rows::Row;
-use cdrs_tokio::types::udt::UDT;
+use cdrs_tokio::types::udt::Udt;
 use cdrs_tokio::types::list::List;
 use cdrs_tokio::types::map::Map;
 use cdrs_tokio::types::from_cdrs::FromCDRSByName;
