@@ -27,13 +27,13 @@ pub fn get_map_params_string(ty: syn::Ty) -> (syn::Ty, syn::Ty) {
         parameters: syn::PathParameters::AngleBracketed(ref angle_bracketed_data),
         ..
       }) => {
-        let braket_types = angle_bracketed_data.types.clone();
+        let bracket_types = angle_bracketed_data.types.clone();
         (
-          braket_types
+          bracket_types
             .first()
             .expect("Cannot define Option type")
             .clone(),
-          braket_types
+          bracket_types
             .last()
             .expect("Cannot define Option type")
             .clone(),
