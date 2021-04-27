@@ -1,3 +1,5 @@
+**NOTE: Moved to the main https://github.com/krojew/cdrs-tokio repository**
+
 # cdrs-tokio-helpers-derive
 
 Procedural macros that derive helper traits for CDRS Cassandra to Rust types conversion back and forth
